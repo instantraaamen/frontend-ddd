@@ -87,3 +87,68 @@ describe('Helloコンポーネント', () => {
 ```sh
 npm run test
 ```
+
+## 3. react router
+
+> tarminal
+```sh
+npm install react-router-dom
+npm install --save-dev @types/react-router-dom
+```
+
+> src/main.tsx
+```ts
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);
+```
+
+> src/App.tsx
+```ts
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/About';
+import User from './components/User';
+import NotFound from './components/NotFound';
+
+const App: React.FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="about" element={<About />} />
+      <Route path="user/:id" element={<User />} />
+      {/* リダイレクト例 */}
+      <Route path="old-home" element={<Navigate to="/" replace />} />
+      {/* 404ページ */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
+export default App;
+```
+
+> src/components/Home.tsx
+```ts
+import React from 'react';
+
+const Home: React.FC = () => (
+  <div>
+    <h1>Home</h1>
+    <p>Welcome to the Home page.</p>
+  </div>
+);
+export default Home;
+
+```
