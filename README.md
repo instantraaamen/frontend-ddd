@@ -157,3 +157,144 @@ export default Home;
 npm run build
 npm run preview 
 ```
+
+## 4. react query
+```sh
+npm install @tanstack/react-query
+npm install axios
+```
+
+> tsconfig.app.json
+```json
+{
+  "compilerOptions": {
+    // ...
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
+}
+```
+
+> main.tsx
+```ts
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <QueryClientProvider client={new QueryClient}>
+    // ...
+    </QueryClientProvider>
+  </StrictMode>
+)
+```
+
+> src/hooks/usePosts.ts
+```ts
+import { useQuery } from '@tanstack/react-query';
+
+type Post = {
+  id: number;
+  title: string;
+  body: string;
+};
+
+export function usePosts() {
+  return useQuery<Post[], Error>({
+    queryKey: ['posts'],
+    queryFn: async () => {
+      const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 5, // 5分キャッシュ
+  });
+}
+```
+
+> src/components/PostList.tsx
+```ts
+import React from 'react';
+import { usePosts } from '../hooks/usePosts';
+
+const PostList: React.FC = () => {
+  const { data, isLoading, error } = usePosts();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <ul>
+      {data!.map(post => (
+        <li key={post.id}>
+          <strong>{post.title}</strong>
+          <p>{post.body}</p>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default PostList;
+```
+
+> src/data/users.json
+```ts
+[
+  { "id": 1, "name": "Alice" },
+  { "id": 2, "name": "Bob" }
+]
+```
+
+> src/hooks/useUsers.ts
+```ts
+import { useQuery } from '@tanstack/react-query';
+import users from '../data/users.json';
+
+type User = { id: number; name: string };
+
+export function useUsers() {
+  return useQuery<User[], Error>({
+    queryKey: ['users'],
+    queryFn: async () => {
+      // Web API の代わりにローカル JSON を返す
+      return Promise.resolve(users);
+    },
+  });
+}
+```
+
+> src/components/UserList.tsx
+```ts
+import React from 'react';
+import { useUsers } from '../hooks/useUsers';
+
+const UserList: React.FC = () => {
+  const { data, isLoading, error } = useUsers();
+
+  if (isLoading) return <p>Loading users...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <ul>
+      {data!.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default UserList;
+```
+
+> main.tsx
+```ts
+const App: React.FC = () => {
+    return (
+      <Routes>
+      // ...
+        <Route path="user-list" element={<UserList />} />
+        <Route path="post-list" element={<PostList />} />
+      </Routes>
+    );
+  };
+```
