@@ -150,5 +150,10 @@ const Home: React.FC = () => (
   </div>
 );
 export default Home;
+```
 
+> tarminal
+```sh
+npm run build
+npm run preview 
 ```
