@@ -298,3 +298,80 @@ const App: React.FC = () => {
     );
   };
 ```
+
+## 5. tailwind css
+> terminal
+```sh
+npm install -D tailwindcss @tailwindcss/vite
+```
+
+> vite.config.ts
+```tsx
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),    // ← 追加
+  ],
+})
+```
+
+> src/styles/tailwind.css
+```css
+@import "tailwindcss";
+```
+> src/main.tsx
+```tsx
+import "./styles/tailwind.css";
+```
+
+> src/components/Button.tsx
+```tsx
+import React from "react";
+
+type ButtonProps = {
+  label: string;
+  onClick?: () => void;
+};
+
+export const Button: React.FC<ButtonProps> = ({ label, onClick }) => (
+  <button
+    onClick={onClick}
+    className="
+      bg-blue-500 
+      hover:bg-blue-700 
+      text-white 
+      font-bold 
+      py-2 
+      px-4 
+      rounded
+    "
+  >
+    {label}
+  </button>
+);
+```
+
+> src/UI.tsx
+```tsx
+import { Button } from "./components/Button";
+
+const UI: React.FC = () => {
+  return (
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <Button label="テストボタン" onClick={() => alert("クリックされました")} />
+    </div>
+  );
+};
+
+export default UI;
+```
+
+> terminal
+```sh
+npm run dev
+```
+
