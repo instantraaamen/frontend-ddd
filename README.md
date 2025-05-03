@@ -8,8 +8,9 @@ npm create vite@latest app -- --template react-ts
 cd app
 npm install
 npm run dev
+```
 
-## vitest
+```sh
 npm install --save-dev vitest @testing-library/react @testing-library/jest-dom jsdom
 ```
 
@@ -159,6 +160,8 @@ npm run preview
 ```
 
 ## 4. react query
+
+> tarminal
 ```sh
 npm install @tanstack/react-query
 npm install axios
