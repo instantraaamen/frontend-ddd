@@ -5,6 +5,10 @@ import User from './components/User';
 import UserList from './components/UserList';
 import NotFound from './components/NotFound';
 import PostList from './components/PostList';
+import Cbutton from './components/catalog/CButton';
+import { Cspinner } from './components/catalog/Cspinner';
+import { Cnavbar } from './components/catalog/CNavbar';
+import { Cdropdown } from './components/catalog/Cdropdown';
 
 
 const App: React.FC = () => {
@@ -16,6 +20,10 @@ const App: React.FC = () => {
         <Route path="user-list" element={<UserList />} />
         <Route path="post-list" element={<PostList />} />
         <Route path="old-home" element={<Navigate to="/" replace />} />
+        <Route path="component/button" element={<Cbutton />} />
+        <Route path="component/spinner" element={<Cspinner />} />
+        <Route path="component/navbar" element={<Cnavbar />} />
+        <Route path="component/dropdown" element={<Cdropdown />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     );
